@@ -30,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'comment',
+    freezeTableName: true
+
   });
   return comment;
 };

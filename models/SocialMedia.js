@@ -36,6 +36,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'SocialMedia',
+    freezeTableName: true
+
   });
   return SocialMedia;
 };

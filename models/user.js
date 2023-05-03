@@ -1,4 +1,5 @@
   'use strict';
+  const bcrypt = require('../helpers/bcrypt')
   const {
     Model
   } = require('sequelize');
@@ -102,6 +103,14 @@
     }, {
       sequelize,
       modelName: 'user',
+      freezeTableName: true,
+      hooks: {
+        beforeCreate: (user) => {
+          const hashedPass = bcrypt.hashPassword(user.password)
+  
+          user.password = hashedPass
+        }
+      }
     });
     return user;
   };
