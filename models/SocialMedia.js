@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      SocialMedia.belongsTo(models.user)
+      SocialMedia.belongsTo(models.user, { foreignKey: 'UserId' })
     }
   }
   SocialMedia.init({
@@ -32,7 +32,15 @@ module.exports = (sequelize, DataTypes) => {
         },
       }
     },
-    UserId: DataTypes.INTEGER
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
+    }
   }, {
     sequelize,
     modelName: 'SocialMedia',

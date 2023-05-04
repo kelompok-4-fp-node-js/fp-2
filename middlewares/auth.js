@@ -11,12 +11,11 @@ module.exports = async (req, res, next) => {
         const userData = await user.findOne({
             where: { username: payload.username, password: payload.password },
         })
-
         if (!userData) {
             res.status(404).send({ message: 'user not found' })
         }
          else {
-            req.userlogin = userData.dataValues
+            req.userLogin = userData.dataValues
             next()
         }
     } catch (err) {
