@@ -11,14 +11,10 @@ module.exports = async (req, res, next) => {
     const userData = await user.findOne({
       where: { username: payload.username, password: payload.password },
     });
-    // console.log(userData.dataValues, "ini user data di auth");
-
     if (!userData) {
       res.status(404).send({ message: "user not found" });
     } else {
-      //   console.log(userData.dataValues, "ini user data di auth else");
-      req.userlogin = userData.dataValues;
-      //   console.log(req.userlogin);
+      req.userLogin = userData.dataValues;
       next();
     }
   } catch (err) {

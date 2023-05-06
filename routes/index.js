@@ -3,5 +3,6 @@ var router = express.Router();
 
 router.use("/users", require("./user"));
 router.use("/comments", require("./comment"));
+router.use("/photos", require("./photo"));
 
 module.exports = router;

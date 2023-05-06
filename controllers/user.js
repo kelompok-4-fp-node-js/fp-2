@@ -5,6 +5,10 @@ module.exports = class {
     static async register(req, res){
         try {
             const newUser = await  user.create(req.body)
+
+            const userCredentials = newUser.toJSON({
+                exclude: ['password', 'createdAt', 'updatedAt']
+              });
             
             res.status(201).json({user:newUser})
         } catch (error) {
@@ -42,20 +46,18 @@ module.exports = class {
     static async update (req,res){
         try {
             const userData = await user.findOne({where:{id: req.params.id}})
-
             if(!userData){
                 res.status(401).json({message: 'user not found'})
                 return
             }
-            console.log(userData.dataValues);
 
             if (userData.dataValues.id !== req.userLogin.id) {
                 res.status(500).json({message: 'This is not your data'})
                 return
             }
-            console.log(req.userLogin);
 
-            const updateData = await user.update(req.body)
+            const updateData = await user.update(req.body,{where: {id: req.params.id},returning: true})
+
             res.status(200).json({user : updateData})
         } catch (error) {
             res.status(500).json(error)
@@ -70,13 +72,13 @@ module.exports = class {
                 res.status(401).json({message: 'User not found'})
                 return
             }
-    
-            if (req.userLogin.id !== findUser.id) {
+
+            if (req.userLogin.id !== findUser.dataValues.id) {
                 res.status(401).json({message: 'You not user this account'})
                 return
             }
-            
-            const deleteData = await user.destroy({id:req.params.id})
+
+            const deleteData = await user.destroy({where: {id: req.userLogin.id},returning: true})
             res.status(200).json({message : "Your Account has been deleted"})
         } catch (error) {
             res.status(500).json(error)
