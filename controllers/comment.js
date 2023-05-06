@@ -5,7 +5,18 @@ const bcrypt = require("../helpers/bcrypt");
 module.exports = class {
   static async get(req, res) {
     try {
-      const result = await comment.findAll();
+      const result = await comment.findAll({
+        include: [
+          {
+            model: photo,
+            attributes: { exclude: ["createdAt", "updatedAt", "UserId"] },
+          },
+          {
+            model: user,
+            attributes: ["id", "username", "profile_image_url", "phone_number"],
+          },
+        ],
+      });
       res.json({
         message: result,
       });
@@ -17,13 +28,13 @@ module.exports = class {
     try {
       const commentt = req.body.comment;
       const PhotoId = req.body.PhotoId;
-      // const findPhoto = await photo.findOne({ where: { id: PhotoId } });
-      // console.log(findPhoto);
-
-      // if (!findPhoto) {
-      //   res.status(404).json({ message: "Data with PhotoId " + PhotoId + " not found" });
-      //   return;
-      // }
+      const findPhoto = await photo.findOne({ where: { id: PhotoId } });
+      console.log(findPhoto);
+      // res.send("ok");
+      if (!findPhoto) {
+        res.status(404).json({ message: "Data with PhotoId " + PhotoId + " not found" });
+        return;
+      }
       const create = await comment.create({ UserId: req.userLogin.id, PhotoId: PhotoId, comment: commentt });
 
       res.status(201).json({ comment: create });
