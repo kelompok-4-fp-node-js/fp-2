@@ -4,13 +4,20 @@ const bcrypt = require('../helpers/bcrypt')
 module.exports = class {
     static async register(req, res){
         try {
-            const newUser = await  user.create(req.body)
+            const newUser = await  user.create(req.body,)
 
-            const userCredentials = newUser.toJSON({
-                exclude: ['password', 'createdAt', 'updatedAt']
-              });
-            
-            res.status(201).json({user:newUser})
+            // const userCredentials = newUser.toJSON({
+            //     exclude: ['password', 'createdAt', 'updatedAt']
+            //   });
+
+              
+            // console.log(userCredentials);
+            const secure = JSON.parse(JSON.stringify(newUser));
+            delete secure.password;
+            delete secure.updatedAt;
+            delete secure.createdAt;
+      
+            res.status(201).json({user:secure})
         } catch (error) {
             res.status(500).json(error)
 
@@ -50,15 +57,25 @@ module.exports = class {
                 res.status(401).json({message: 'user not found'})
                 return
             }
+            console.log('===========1');
 
             if (userData.dataValues.id !== req.userLogin.id) {
                 res.status(500).json({message: 'This is not your data'})
                 return
             }
-
+            console.log('===========2');
+            
             const updateData = await user.update(req.body,{where: {id: req.params.id},returning: true})
 
-            res.status(200).json({user : updateData})
+            console.log('===========3');
+            console.log(updateData[1].dataValues);
+            const secure = JSON.parse(JSON.stringify(updateData[1]));
+            delete secure.password;
+            delete secure.updatedAt;
+            delete secure.createdAt;
+
+            console.log('===========4');
+            res.status(200).json({user : updateData[1]})
         } catch (error) {
             res.status(500).json(error)
         }
@@ -79,7 +96,7 @@ module.exports = class {
             }
 
             const deleteData = await user.destroy({where: {id: req.userLogin.id},returning: true})
-            res.status(200).json({message : "Your Account has been deleted"})
+            res.status(200).json({message : "Your Account has been successfully deleted"})
         } catch (error) {
             res.status(500).json(error)
         }
