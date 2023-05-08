@@ -1,4 +1,4 @@
-const {photo,user} = require('../models')
+const {photo,user,comment} = require('../models')
 
 module.exports = class {
     static async post(req, res){
@@ -8,7 +8,10 @@ module.exports = class {
                 UserId: req.userLogin.id
             })
 
-            res.status(201).json({Photo:newPhoto})
+            const secure = JSON.parse(JSON.stringify(newPhoto));
+            delete secure.updatedAt;
+            delete secure.createdAt;
+            res.status(201).json({Photo:secure})
 
         } catch (error) {
             res.status(500).json(error)
@@ -19,9 +22,16 @@ module.exports = class {
         try {
             const photoData = await photo.findAll({
                 where:{UserId: req.userLogin.id},
-                include: { model: user,
-                    attributes: { exclude: ['password', 'createdAt', 'updatedAt','full_name','email','age','phone_number'] } }
-            })
+                include: [
+                    { model: user,
+                        attributes: { exclude: ['password', 'createdAt', 'updatedAt','full_name','email','age','phone_number'] } },
+                    { model: comment,
+                        attributes: ['comment'],
+                        include : [{model: user,
+                            attributes: ['username']}]
+                      }
+                ]
+                })
 
             res.status(200).json({Photos:photoData})
         } catch (error) {
@@ -39,8 +49,8 @@ module.exports = class {
             }
 
             const updateData = await photo.update(req.body,{where: {id: req.params.id},returning: true})
-
-            res.status(200).json(updateData)
+            const dataP = updateData[1]
+            res.status(200).json({photo : dataP[0]})
 
         } catch (error) {
             res.status(500).json(error)
@@ -57,7 +67,7 @@ module.exports = class {
             }
 
             const deleteData = await photo.destroy({where: {id: req.params.id},returning: true})
-            res.status(200).json({message : "Your photo has been deleted"})
+            res.status(200).json({message : "Your photo has been successfully deleted"})
 
 
         } catch (error) {

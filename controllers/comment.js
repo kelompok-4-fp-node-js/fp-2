@@ -38,7 +38,7 @@ module.exports = class {
 
       res.status(201).json({ comment: create });
     } catch (error) {
-      res.status(400).json({ message: error.errors[0].message });
+      res.status(500).json( error );
     }
   }
   static async update(req, res) {
@@ -59,7 +59,7 @@ module.exports = class {
 
       res.status(200).json({ comment: updateComment });
     } catch (error) {
-      res.status(400).json({ message: error.errors[0].message });
+      res.status(500).json( error );
     }
   }
   static async delete(req, res) {
@@ -76,7 +76,7 @@ module.exports = class {
         return;
       }
       const deleteComment = await deleteTarget.destroy({ returning: true });
-      res.status(200).json({ message: "Your comment has been succesfuly deleted" });
+      res.status(200).json({ message: "Your comment has been successfully deleted" });
     } catch (error) {
       res.status(500).json(error);
     }

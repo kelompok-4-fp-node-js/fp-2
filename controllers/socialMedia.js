@@ -39,8 +39,9 @@ module.exports = class {
             }
 
             const updateData = await SocialMedia.update(req.body,{where: {id: req.params.id},returning: true})
+            const sosmedPut = updateData[1]
+            res.status(200).json({Social_Media : sosmedPut[0]})
 
-            res.status(200).json(...updateData[1])
 
         } catch (error) {
             res.status(500).json(error)
@@ -57,7 +58,7 @@ module.exports = class {
             }
 
             const deleteData = await SocialMedia.destroy({where: {id: req.params.id},returning: true})
-            res.status(200).json({message : "Your social media has been deleted"})
+            res.status(200).json({message : "Your social media has been successfully deleted"})
 
 
         } catch (error) {
