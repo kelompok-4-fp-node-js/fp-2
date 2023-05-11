@@ -1,6 +1,6 @@
 # final-project-2
 
-### Kelompok 4
+### kelompok 4
 ```
 Dhewan Agum Mahendra (Leader)
 Muzammil Husaeri
