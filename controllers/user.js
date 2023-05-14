@@ -25,7 +25,7 @@ module.exports = class {
         }
 
     }
-  }
+  
 
   static async login(req, res) {
     try {
@@ -49,7 +49,7 @@ module.exports = class {
     } catch (error) {
       res.status(500).json(error);
     }
-
+  }
 
     static async update (req,res){
         try {
@@ -104,5 +104,4 @@ module.exports = class {
 
 
     }
-  }
 };
