@@ -19,7 +19,7 @@ module.exports = class {
         ],
       });
       res.json({
-        message: result,
+        comments: result,
       });
     } catch (error) {
       res.status(500).json(error);
