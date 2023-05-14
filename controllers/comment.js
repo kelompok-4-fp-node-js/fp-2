@@ -6,6 +6,7 @@ module.exports = class {
   static async get(req, res) {
     try {
       const result = await comment.findAll({
+        where: { UserId: req.userLogin.id },
         include: [
           {
             model: photo,
@@ -26,12 +27,9 @@ module.exports = class {
   }
   static async create(req, res) {
     try {
-      console.log('=======');
       const commentt = req.body.comment;
       const PhotoId = req.body.PhotoId;
       const findPhoto = await photo.findOne({ where: { id: PhotoId } });
-      console.log(findPhoto);
-      // res.send("ok");
       if (!findPhoto) {
         res.status(404).json({ message: "Data with PhotoId " + PhotoId + " not found" });
         return;

@@ -1,7 +1,8 @@
-const {user} = require('../models')
-const jwt = require('../helpers/jwt')
-const bcrypt = require('../helpers/bcrypt')
+const { user } = require("../models");
+const jwt = require("../helpers/jwt");
+const bcrypt = require("../helpers/bcrypt");
 module.exports = class {
+
     static async register(req, res){
         try {
             const newUser = await  user.create(req.body,)
@@ -22,33 +23,33 @@ module.exports = class {
             res.status(500).json(error)
 
         }
+
     }
-
-    static async login (req,res){
-        try {
-
-           const userData = await user.findOne({where:{email: req.body.email}})
-
-           if(!userData){
-            res.status(401).json({message: 'Email not found'})
-            return
-            }
   
-           const isCorrect = await bcrypt.comparePassword(req.body.password, userData.dataValues.password)
-           if (!isCorrect) {
-            throw {
-                code: 401,
-                message: "Password salah",
-              };
-           }
 
-           const token = jwt.generateToken(userData.dataValues)
-           res.status(200).json({token : token})
-        } catch (error) {
-            res.status(500).json(error)
+  static async login(req, res) {
+    try {
+      const userData = await user.findOne({ where: { email: req.body.email } });
 
-        }
+      if (!userData) {
+        res.status(401).json({ message: "Email not found" });
+        return;
+      }
+
+      const isCorrect = await bcrypt.comparePassword(req.body.password, userData.dataValues.password);
+      if (!isCorrect) {
+        throw {
+          code: 401,
+          message: "Password salah",
+        };
+      }
+
+      const token = jwt.generateToken(userData.dataValues);
+      res.status(200).json({ token: token });
+    } catch (error) {
+      res.status(500).json(error);
     }
+  }
 
     static async update (req,res){
         try {
@@ -101,5 +102,6 @@ module.exports = class {
             res.status(500).json(error)
         }
 
+
     }
-}
+};

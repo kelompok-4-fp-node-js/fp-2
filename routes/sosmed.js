@@ -10,4 +10,3 @@ router.put('/:id', auth,sosmed.put)
 router.delete('/:id', auth,sosmed.delete)
 
 module.exports = router;
-

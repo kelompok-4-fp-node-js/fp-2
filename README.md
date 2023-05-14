@@ -1,9 +1,10 @@
-# final-project-1
+# final-project-2
+
+### kelompok 4
 ```
-Kelompok 4
 Dhewan Agum Mahendra (Leader)
-Imam Fauzi
-Muhammad Hamada
+Muzammil Husaeri
+Kharis Rahmat
 ```
 
 ### npm command
@@ -13,4 +14,3 @@ sequelize db:create
 sequelize db:migrate
 npm run start
 ```
-
