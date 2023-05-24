@@ -38,7 +38,7 @@ module.exports = class {
 
       res.status(201).json({ comment: create });
     } catch (error) {
-      res.status(500).json( error );
+      res.status(500).json(error);
     }
   }
   static async update(req, res) {
@@ -59,7 +59,7 @@ module.exports = class {
 
       res.status(200).json({ comment: updateComment });
     } catch (error) {
-      res.status(500).json( error );
+      res.status(500).json(error);
     }
   }
   static async delete(req, res) {
