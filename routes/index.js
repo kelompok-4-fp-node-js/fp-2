@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 router.get("/", (req, res) => {
-  res.json({ message: "welcome to Toko belanja Kelompok 4" });
+  res.json({ message: "welcome to MyGram API kelompok 4" });
 });
 router.use("/users", require("./user"));
 router.use("/photos", require("./photo"));
